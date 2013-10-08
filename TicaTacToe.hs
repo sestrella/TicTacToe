@@ -27,12 +27,30 @@ verticalSlices b = map (\column -> map (\row -> row !! column) b) [0..2]
 diagonalSlices :: Board -> [[Maybe Piece]]
 diagonalSlices b = map(\n -> 
                       map (\index -> b !! index !! abs (index - n)) 
-                          [0..2]) [0, 2]
+                          [0..2]) 
+                      [0, 2]
 
-pieceForPlayer :: Player -> Piece
-pieceForPlayer p  
-    | Player1 == p  = Cross
-    | Player2 == p  = Circle 
+sliceWinner :: [Maybe Piece] -> Maybe Player
+sliceWinner slices = undefined
+
+--winnerRow :: [[Maybe Piece]] -> [Maybe Piece]
+--winnerRow slices =
+
+samePiece :: [Maybe Piece] -> Maybe Piece
+-- [Cross, Cross, Cross] -> Cross
+-- [Cross, Circle, Cross] -> Nothing
+samePiece slice =
+  let f = head slice in
+    foldl (\n r -> case n of
+            Nothing -> Nothing
+            Just r  -> (if r == f then r else Nothing)) 
+          f 
+          slice
+
+playerFromPiece :: Piece -> Player
+playerFromPiece p 
+    | Cross  == p  = Player1
+    | Circle == p  = Player2 
 
 emptyBoard :: Board
 emptyBoard = replicate 3 (replicate 3 Nothing)
