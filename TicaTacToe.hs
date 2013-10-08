@@ -19,16 +19,15 @@ wonBy :: [Maybe Piece] -> Maybe Player
 wonBy slice = undefined
 
 slices :: Board -> [[Maybe Piece]]
-slices b = (diagonalOne b):(diagonalTwo b):(verticalSlices b) ++ b
+slices b = (diagonalSlices b) ++ (verticalSlices b) ++ b
 
 verticalSlices :: Board -> [[Maybe Piece]]
 verticalSlices b = map (\column -> map (\row -> row !! column) b) [0..2]
 
-diagonalOne :: Board -> [Maybe Piece]
-diagonalOne b = map (\index -> b !! index !! index) [0..2]
-
-diagonalTwo :: Board -> [Maybe Piece]
-diagonalTwo b = map (\index -> b !! index !! (2 - index)) [0..2]
+diagonalSlices :: Board -> [[Maybe Piece]]
+diagonalSlices b = map(\n -> 
+                      map (\index -> b !! index !! abs (index - n)) 
+                          [0..2]) [0, 2]
 
 pieceForPlayer :: Player -> Piece
 pieceForPlayer p  
